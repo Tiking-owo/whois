@@ -20,7 +20,7 @@
 
 ### 第三方服务
 - **WhoisCX API** - 域名查询服务https://api.whoiscx.com/
-- **jsDelivr** - 此网页所需前端库已经本地化
+- **jsDelivr** - 此网页所需前端库已本地化
 
 ## 🚀 快速使用
 
