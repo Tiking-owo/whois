@@ -24,11 +24,12 @@
 
 ## 🚀 快速使用
 
-1. 直接访问部署好的网站https://whois.tiking.top
+1. 直接访问部署好的网站https://whois.tiking.top 
 2. 在输入框中输入要查询的域名 (如 `example.com`)
 3. 点击"查询"按钮获取信息
+4. 若要快速查询在URL后面加上/?domain=[要查询的域名]
 
-或自行部署：
+### 或自行部署：
 
 ```bash
 git clone https://github.com/Tiking-owo/whois.git
