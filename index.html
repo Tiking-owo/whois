@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whois 域名信息查询</title>
+    <link rel="stylesheet" href="./bootstrap.min.css">
+    <link rel="stylesheet" href="./bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --success-color: #4cc9f0;
+            --warning-color: #f72585;
+        }
+
+        html, body {
+            height: 100%;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            color: var(--dark-color);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+        }
+        .container.my-5 {
+            flex: 1 0 auto;
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+        }
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .search-container {
+            background: linear-gradient(135deg, #4361ee 0%, #3f37c9 100%);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(67, 97, 238, 0.2);
+            margin-bottom: 2rem;
+            color: white;
+        }
+        
+        .search-container h1 {
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+        
+        .search-input {
+            border-radius: 50px;
+            padding: 1rem 1.5rem;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .search-btn {
+            border-radius: 50px;
+            padding: 1rem 2rem;
+            font-weight: 600;
+            background-color: white;
+            color: var(--primary-color);
+            border: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .search-btn:hover {
+            background-color: var(--light-color);
+            transform: translateY(-2px);
+        }
+        
+        .result-card {
+            border-radius: 15px;
+            border: none;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+            overflow: hidden;
+            display: none;
+        }
+        
+        .result-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
+        
+        .result-body {
+            padding: 2rem;
+        }
+        
+        .info-item {
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 1.5rem;
+        }
+        
+        .info-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .info-label {
+            font-weight: 600;
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .info-value {
+            font-size: 1.1rem;
+        }
+        
+        .badge-available {
+            background-color: #4cc9f0;
+        }
+        
+        .badge-registered {
+            background-color: #f72585;
+        }
+        
+        .raw-data {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 1.5rem;
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre-wrap;
+            word-break: break-all;
+            display: none;
+        }
+        
+        .toggle-raw-btn {
+            color: var(--primary-color);
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 1rem;
+            display: inline-block;
+        }
+        
+        .toggle-raw-btn:hover {
+            text-decoration: underline;
+        }
+        
+        .loading-spinner {
+            display: none;
+            margin: 2rem auto;
+        }
+        
+        .error-message {
+            color: var(--warning-color);
+            font-weight: 600;
+            text-align: center;
+            margin: 2rem 0;
+            display: none;
+        }
+        
+        .domain-status-item {
+            display: inline-block;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            padding: 0.25rem 0.5rem;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+        
+        .name-server-item {
+            display: inline-block;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            padding: 0.25rem 0.5rem;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .search-container {
+                padding: 1.5rem;
+            }
+            
+            .search-container h1 {
+                font-size: 1.8rem;
+            }
+            
+            .result-body {
+                padding: 1.5rem;
+            }
+        }
+        .footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 2rem 0;
+            margin-top: auto; /* 确保页脚在底部 */
+        }
+    
+        .footer-link {
+            text-align: center;
+            padding-top: 20px;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+    
+        .footer-links a {
+            transition: all 0.3s ease;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+        }
+    
+        .footer-links a.hover-text:hover {
+            color: var(--pink-color, #f72585);
+            padding-left: 5px;
+        }
+    
+        .copyright, .footer small {
+            color: rgba(255, 255, 255, 0.5);
+        }
+    
+        .footer a:hover {
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="bi bi-globe me-2"></i>Whois查询
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://whois.tiking.top"><i class="bi bi-house-door me-1"></i>首页</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://github.com/Tiking-owo/whois"><i class="bi bi-github me-1"></i>源码</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="mailto:tiking@skyfurry.cn"><i class="bi bi-envelope me-1"></i>联系</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-5">
+        <div class="search-container">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <h1>查询域名Whois信息</h1>
+                    <p>输入您想查询的域名，获取详细的注册信息、到期时间等数据</p>
+                </div>
+                <div class="col-lg-4 text-lg-end">
+                    <i class="bi bi-search" style="font-size: 4rem; opacity: 0.2;"></i>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-md-9 mb-3 mb-md-0">
+                    <input type="text" class="form-control search-input" id="domainInput" placeholder="例如: example.com">
+                </div>
+                <div class="col-md-3">
+                    <button class="btn search-btn w-100" id="searchBtn">
+                        <i class="bi bi-search me-2"></i>查询
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center">
+            <div class="spinner-border text-primary loading-spinner" role="status">
+                <span class="visually-hidden">加载中...</span>
+            </div>
+            
+            <div class="error-message" id="errorMessage"></div>
+        </div>
+
+        <div class="card result-card" id="resultCard">
+            <div class="result-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0" id="resultDomain"></h5>
+                <span class="badge rounded-pill" id="domainStatusBadge"></span>
+            </div>
+            <div class="result-body">
+                <div class="row" id="domainInfoContainer">
+                    <!-- 信息将在这里动态生成 -->
+                </div>
+                
+                <div class="raw-data" id="rawData"></div>
+                
+                <div class="text-center mt-3">
+                    <span class="toggle-raw-btn" id="toggleRawBtn">
+                        <i class="bi bi-code-slash me-2"></i>查看完整Whois信息
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+    <div class="container">
+        <div class="footer-links text-center">
+            <div class="footer-link">
+                <a class="hover-text" href="https://beian.miit.gov.cn/">浙ICP备2025165329号-1</a> | 
+                <img style="display: inline; width: 18px; padding-top: 2px; margin-bottom: 4px;" src="https://www.skyfurry.top/beian.png">
+                <a class="hover-text" href="https://beian.mps.gov.cn/#/query/webSearch?code=33018302001855">浙公网安备33018302001855号</a>
+            </div>
+            <p class="mb-0 mt-2"><small>数据来源于公开Whois信息，仅供参考</small></p>
+            <p class="copyright mt-2 mb-0">© 2023 Whois查询工具. 所有权利保留.</p>
+        </div>
+    </div>
+</footer>
+
+    <script src="./bootstrap.bundle.min.js"></script>
+    <script>
+        // API配置
+        const WHOIS_API_BASE = 'https://api.whoiscx.com/whois/';
+        
+        // DOM元素
+        const domainInput = document.getElementById('domainInput');
+        const searchBtn = document.getElementById('searchBtn');
+        const resultCard = document.getElementById('resultCard');
+        const resultDomain = document.getElementById('resultDomain');
+        const domainStatusBadge = document.getElementById('domainStatusBadge');
+        const domainInfoContainer = document.getElementById('domainInfoContainer');
+        const rawData = document.getElementById('rawData');
+        const toggleRawBtn = document.getElementById('toggleRawBtn');
+        const loadingSpinner = document.querySelector('.loading-spinner');
+        const errorMessage = document.getElementById('errorMessage');
+        
+        // 上次查询时间，用于限频
+        let lastQueryTime = 0;
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 绑定查询按钮点击事件
+            searchBtn.addEventListener('click', queryWhois);
+            
+            // 绑定回车键查询
+            domainInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    queryWhois();
+                }
+            });
+            
+            // 绑定查看完整信息按钮
+            toggleRawBtn.addEventListener('click', function() {
+                if (rawData.style.display === 'none') {
+                    rawData.style.display = 'block';
+                    toggleRawBtn.innerHTML = '<i class="bi bi-eye-slash me-2"></i>隐藏完整Whois信息';
+                } else {
+                    rawData.style.display = 'none';
+                    toggleRawBtn.innerHTML = '<i class="bi bi-code-slash me-2"></i>查看完整Whois信息';
+                }
+            });
+        });
+        
+        // 查询Whois信息
+        function queryWhois() {
+            const domain = domainInput.value.trim();
+            
+            // 验证域名
+            if (!isValidDomain(domain)) {
+                showError('请输入有效的域名（例如：example.com）');
+                return;
+            }
+            
+            // 检查查询频率
+            const now = Date.now();
+            if (now - lastQueryTime < 2000) { // 2秒限制
+                showError('查询太频繁，请稍后再试');
+                return;
+            }
+            lastQueryTime = now;
+            
+            // 清空之前的结果和错误
+            clearResults();
+            clearError();
+            
+            // 显示加载中
+            loadingSpinner.style.display = 'block';
+            
+            // 构建API URL
+            const apiUrl = `${WHOIS_API_BASE}?domain=${encodeURIComponent(domain)}&raw=1`;
+            
+            // 发起请求
+            fetch(apiUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('网络响应不正常');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    loadingSpinner.style.display = 'none';
+                    
+                    if (data.status === 0) {
+                        showError(data.error || '查询失败，请检查域名是否正确');
+                        return;
+                    }
+                    
+                    // 显示结果
+                    displayResults(data.data);
+                })
+                .catch(error => {
+                    loadingSpinner.style.display = 'none';
+                    showError('查询失败: ' + error.message);
+                    console.error('查询错误:', error);
+                });
+        }
+        
+        // 验证域名格式
+        function isValidDomain(domain) {
+            if (!domain) return false;
+            
+            // 简单的域名验证
+            const pattern = /^([a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,}$/i;
+            return pattern.test(domain);
+        }
+        
+        // 显示错误信息
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+        }
+        
+        // 清除错误信息
+        function clearError() {
+            errorMessage.style.display = 'none';
+            errorMessage.textContent = '';
+        }
+        
+        // 清除结果
+        function clearResults() {
+            resultCard.style.display = 'none';
+            domainInfoContainer.innerHTML = '';
+            rawData.textContent = '';
+            rawData.style.display = 'none';
+            toggleRawBtn.innerHTML = '<i class="bi bi-code-slash me-2"></i>查看完整Whois信息';
+        }
+        
+        // 显示查询结果
+        function displayResults(data) {
+            resultDomain.textContent = data.domain;
+            
+            // 设置域名状态徽章
+            if (data.is_available === 1) {
+                domainStatusBadge.textContent = '可注册';
+                domainStatusBadge.className = 'badge rounded-pill bg-success';
+            } else {
+                domainStatusBadge.textContent = '已注册';
+                domainStatusBadge.className = 'badge rounded-pill bg-primary';
+            }
+            
+            // 设置原始数据
+            rawData.textContent = data.raw || '无原始Whois数据';
+            
+            // 构建信息HTML
+            let html = '';
+            
+            // 基本信息
+            html += `
+                <div class="col-md-6">
+                    <div class="info-item">
+                        <div class="info-label">域名后缀</div>
+                        <div class="info-value">${data.domain_suffix || '未知'}</div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-label">注册商</div>
+                        <div class="info-value">${data.info.registrar_name || '未知'}</div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-label">注册人</div>
+                        <div class="info-value">${data.info.registrant_name || '未公开'}</div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-label">注册人邮箱</div>
+                        <div class="info-value">${data.info.registrant_email || '未公开'}</div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-label">Whois服务器</div>
+                        <div class="info-value">${data.info.whois_server || '未知'}</div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="info-item">
+                        <div class="info-label">创建时间</div>
+                        <div class="info-value">${data.info.creation_time || '未知'}</div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-label">到期时间</div>
+                        <div class="info-value">${data.info.expiration_time || '未知'}</div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-label">已注册天数</div>
+                        <div class="info-value">${data.info.creation_days || '0'} 天</div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-label">剩余有效期</div>
+                        <div class="info-value">${data.info.valid_days || '0'} 天</div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-label">过期状态</div>
+                        <div class="info-value">${data.info.is_expire ? '已过期' : '未过期'}</div>
+                    </div>
+                </div>
+                
+                <div class="col-12">
+                    <div class="info-item">
+                        <div class="info-label">域名状态</div>
+                        <div class="info-value">
+                            ${formatDomainStatus(data.info.domain_status)}
+                        </div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-label">DNS服务器</div>
+                        <div class="info-value">
+                            ${formatNameServers(data.info.name_server)}
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            domainInfoContainer.innerHTML = html;
+            resultCard.style.display = 'block';
+        }
+        
+        // 格式化域名状态
+        function formatDomainStatus(statuses) {
+            if (!statuses || statuses.length === 0) {
+                return '<span class="text-muted">无状态信息</span>';
+            }
+            
+            return statuses.map(status => {
+                // 提取状态描述
+                const parts = status.split('（');
+                const statusCode = parts[0].trim();
+                const description = parts[1] ? parts[1].replace('）', '') : '';
+                
+                return `
+                    <span class="domain-status-item" title="${description || statusCode}">
+                        ${statusCode}
+                    </span>
+                `;
+            }).join('');
+        }
+        
+        // 格式化DNS服务器
+        function formatNameServers(servers) {
+            if (!servers || servers.length === 0) {
+                return '<span class="text-muted">无DNS服务器信息</span>';
+            }
+            
+            return servers.map(server => {
+                return `
+                    <span class="name-server-item">
+                        ${server}
+                    </span>
+                `;
+            }).join('');
+        }
+    </script>
+</body>
+</html>
