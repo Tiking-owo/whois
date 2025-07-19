@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="https://www.tiking.top/img/favicon.ico">
     <title>Whois 域名信息查询</title>
     <link rel="stylesheet" href="./bootstrap.min.css">
     <link rel="stylesheet" href="./bootstrap-icons.css">
@@ -182,6 +183,65 @@
             font-size: 0.9rem;
         }
         
+        .status-original {
+            font-family: monospace;
+            color: #6c757d;
+            font-size: 0.85rem;
+            margin-left: 0.5rem;
+        }
+        
+        /* 新增购买链接样式 */
+        .buy-domain-container {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary-color);
+            display: none;
+        }
+        
+        .buy-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+        
+        .buy-links {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .buy-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.25rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark-color);
+        }
+        
+        .buy-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .buy-link img {
+            height: 24px;
+            margin-right: 10px;
+        }
+        
+        .buy-link-aliyun:hover {
+            color: #FF6A00;
+        }
+        
+        .buy-link-tencent:hover {
+            color: #006EFF;
+        }
+        
         @media (max-width: 768px) {
             .search-container {
                 padding: 1.5rem;
@@ -194,12 +254,17 @@
             .result-body {
                 padding: 1.5rem;
             }
+            
+            .buy-links {
+                flex-direction: column;
+            }
         }
+        
         .footer {
             background-color: var(--dark-color);
             color: white;
             padding: 2rem 0;
-            margin-top: auto; /* 确保页脚在底部 */
+            margin-top: auto;
         }
     
         .footer-link {
@@ -295,6 +360,20 @@
                     <!-- 信息将在这里动态生成 -->
                 </div>
                 
+                <!-- 购买域名容器 -->
+                <div class="buy-domain-container" id="buyDomainContainer">
+                    <h6 class="buy-title"><i class="bi bi-cart-plus me-2"></i>该域名可注册，立即购买：</h6>
+                    <div class="buy-links">
+                        <a href="#" class="buy-link buy-link-aliyun" id="aliyunLink" target="_blank">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 40" width="30" height="18" class="sc-CB-hAZoDl CB-dbJOzw"><path d="M21.4 22.4h21.2v-4.8H21.4z"></path><path d="M53.3 0H39.2l3.4 4.8L52.9 8c1.9.6 3.1 2.3 3.1 4.3v15.4c0 2-1.2 3.7-3.1 4.3l-10.3 3.2-3.4 4.8h14.1c6 0 10.7-4.8 10.7-10.7V10.7C64 4.7 59.2 0 53.3 0M10.7 0h14.1l-3.4 4.8L11.1 8A4.5 4.5 0 0 0 8 12.3v15.4c0 2 1.2 3.7 3.1 4.3l10.3 3.2 3.4 4.8H10.7C4.7 40 0 35.2 0 29.3V10.7C0 4.7 4.8 0 10.7 0"></path></svg>‎ ‎
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 112 40" width="49" height="18" class="sc-CB-hAZoDl sc-CB-fnykZs CB-dbJOzw CB-ebQdua"><g fill-rule="nonzero"><path d="M15.9 31.5V9h10.9v22.5h-11zm4.3-4.4h2.3V13.4h-2.3V27zM0 40h4.3V4.4h4.4L6.1 16.3v4.3h2.6v9.5c0 .7-.5 1.2-1.1 1.2h-1v4.3h2.1c2.4 0 4.3-2 4.3-4.3v-15h-2.6l2.6-12V0H0v40z"></path><path d="M14.8 4.4h14.8V32c0 2-1.6 3.6-3.6 3.6h-3.2V40h4.4c1.7 0 3.5-.7 4.7-2 1.3-1.3 2-3 2-4.8V4.4h1.6V0H14.8v4.4zm65 0h30.6V0H79.8v4.4zM112 20.6v-4.3H78.2v4.3h8.5l-6.7 15V40h28.8c.6 0 1.2-.2 1.6-.6a2.2 2.2 0 00.4-2.5l-3.7-8.1h-4.7l3 6.8H84.8l6.8-15H112zm-53 15h14.7V40H40v-4.4h14.8V31H41v-4.4h13.7v-4.2H41.5V0h30.7v22.4H59v4.2h13.7V31H59v4.6zM45.8 18h8.9v-4.6h-8.9V18zm0-9h8.9V4.4h-8.9V9zM59 9h8.8V4.4H59V9zm0 9h8.8v-4.6H59V18z"></path></g></svg>
+                        </a>
+                        <a href="#" class="buy-link buy-link-tencent" id="tencentLink" target="_blank">
+                            <svg width="80" height="24" viewBox="0 0 80 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M41.1544 4.25781H42.381C42.444 4.25781 42.495 4.27655 42.4818 4.37093C42.3919 5.02244 42.2946 5.6173 42.1866 6.16473L42.1036 6.56655H43.6265L44.1261 4.8756H45.2036C45.2581 4.8756 45.3025 4.90803 45.2776 4.99181L44.8133 6.56655H46.0537V7.70002H41.8194C41.7276 8.01568 41.629 8.31299 41.5224 8.59472L41.4131 8.87137H46.3642V10.0049H44.665C45.3743 11.0064 46.126 11.5345 46.5316 11.7903L46.6791 11.8814V13.1781C46.6791 13.2434 46.6273 13.3127 46.4213 13.1964C45.9564 12.9338 45.4518 12.5991 44.947 12.1662L44.6948 11.9415L44.643 14.1456H46.2149V19.6034H42.1994L41.8524 18.4709C41.8265 18.4011 41.8517 18.3618 41.8942 18.3488L41.9288 18.344H44.8227V15.2791H38.4019C38.3679 15.2791 38.3414 15.2606 38.3304 15.2329L38.3247 15.2025L38.4445 13.0541H39.6346C39.6685 13.0541 39.6951 13.0725 39.7062 13.1002L39.7119 13.1306L39.6553 14.1456H43.3769L43.4167 12.4481H38.7029C38.2979 12.7459 37.8981 12.985 37.5235 13.1964C37.3433 13.2982 37.281 13.2578 37.2683 13.2024L37.2656 13.1781V11.8814L37.4934 11.7391C37.8832 11.4864 38.5173 11.0182 39.1387 10.2L39.2817 10.0049H37.2778V8.87137H39.9457C40.0809 8.57755 40.2095 8.26706 40.3137 7.97907L40.4092 7.70002H37.5881V6.56655H38.7961L38.3317 4.99181C38.312 4.92478 38.3363 4.89063 38.3749 4.87964L38.4059 4.8756H39.4834L39.9828 6.56655H40.73C40.8699 5.98542 40.9843 5.37062 41.0911 4.68094L41.1544 4.25781ZM61.5295 4.86719V18.2566H62.7664V19.5166H60.1375V11.9777H56.8085V19.6782H55.4161V11.9777H52.3984V10.7183H55.4161V6.12665H52.7829V4.86719H61.5295ZM51.323 8.86328V17.0507L53.6704 15.2807C53.7102 15.2506 53.7667 15.2629 53.7877 15.3039L53.7959 15.3399V16.7664L49.9565 19.6613L49.1926 18.657L49.9401 18.0933V10.2487H48.0703V8.86328H51.323ZM36.8703 19.6065V4.90039H32.5689V13.8268L32.5664 14.2776C32.5432 16.348 32.3572 17.9581 31.9998 19.3959C31.9594 19.5386 32.0028 19.5767 32.078 19.5767H33.3469L33.4269 19.1584C33.7779 17.2288 33.8265 15.6202 33.8333 14.4314H35.6069V18.347H34.3474L34.3128 18.3519C34.2704 18.3648 34.2451 18.4042 34.271 18.474L34.6179 19.6065H36.8703ZM78.2458 11.8249V10.4395H64.1641V11.8249H68.0709L65.225 19.2628C65.203 19.324 65.2433 19.3696 65.2968 19.3696H77.4428L77.4739 19.3633C77.5111 19.3472 77.529 19.3025 77.5126 19.2597L75.7016 14.5218H74.1897L74.1582 14.5279C74.1207 14.5437 74.1018 14.5871 74.1171 14.6271L75.3986 17.9843H67.3453L69.6965 11.8249H78.2458ZM44.1742 16.1562V17.4157H37.2734V16.1562H44.1742ZM35.6083 10.2832H33.8359V13.2974H35.6083V10.2832ZM43.1138 10.0039H40.8607C40.6286 10.4115 40.3829 10.7688 40.1292 11.0845L39.9375 11.3136H44.0806C43.7436 10.9333 43.417 10.5002 43.1138 10.0039ZM60.1415 6.12891H56.8125V10.7204H60.1415V6.12891ZM35.6083 6.16016H33.8359V9.1505H35.6083V6.16016ZM48.266 4.58984H49.7875L51.7066 7.50638C51.7305 7.54245 51.7176 7.5963 51.6769 7.6164L51.6414 7.62434H50.12L48.1985 4.7041C48.1731 4.66556 48.1946 4.61556 48.2338 4.5971L48.266 4.58984ZM76.7057 6.58847V5.20312H65.7188V6.58847H76.7057Z" fill="currentColor"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M22.759 17.9078C22.2998 18.3616 21.4804 18.8769 20.1351 18.9224C19.5133 18.9434 18.7866 18.9459 18.4543 18.9459H11.2266C13.8562 16.3965 16.1502 14.1731 16.4105 13.9207C16.6487 13.6898 17.185 13.1777 17.6474 12.7621C18.6629 11.8496 19.5768 11.666 20.2232 11.672C21.2362 11.6813 22.1572 12.0941 22.8154 12.7606C24.2241 14.1976 24.1906 16.4937 22.759 17.9078ZM24.4885 11.1246C23.4085 10.0253 21.9032 9.33277 20.2298 9.33277C18.7833 9.33241 17.5378 9.83027 16.4502 10.7139C15.9764 11.0993 15.4794 11.5605 14.8536 12.1669C14.6461 12.3683 10.5467 16.338 7.85501 18.9446C7.48031 18.9433 6.94187 18.9379 6.46447 18.9219C5.11919 18.8764 4.29984 18.3611 3.84053 17.9073C2.40902 16.4932 2.37554 14.1971 3.78427 12.7601C4.44242 12.0935 5.36384 11.6808 6.37644 11.6715C7.01109 11.669 7.87257 11.853 8.84556 12.6583L8.84574 12.6582C9.31037 13.0426 10.3419 13.9476 10.7945 14.355C10.8176 14.3757 10.8453 14.3776 10.8723 14.3555L12.4692 12.8004C12.4968 12.7737 12.4952 12.7376 12.4679 12.713C11.7 12.0202 10.6113 11.0507 9.95591 10.5637C9.26735 10.0495 8.52504 9.68366 7.72063 9.49079C7.72882 9.49259 7.73737 9.49366 7.74601 9.49537C8.28823 6.91148 10.5771 4.99227 13.2987 4.99227C15.5656 4.99227 17.5542 6.35667 18.451 8.29043C18.4648 8.32106 18.4888 8.33104 18.5133 8.32421C19.1876 8.13924 19.9959 8.03171 20.7768 8.08938C20.8527 8.09504 20.8823 8.05201 20.8577 7.98293C19.7555 4.87665 16.7887 2.65039 13.2987 2.65039C9.29552 2.65039 5.97815 5.58841 5.37734 9.41533C5.37914 9.41533 5.38094 9.41569 5.38274 9.41533C4.10767 9.62851 2.97239 10.2459 2.10912 11.1246C-0.204564 13.4846 -0.168921 17.2558 2.20146 19.5791C3.15313 20.5119 4.30623 21.0194 5.53603 21.1909H5.53566C6.00776 21.2581 6.657 21.2781 7.23638 21.2817C7.77878 21.2853 18.1279 21.2841 18.5611 21.2841C19.4332 21.2841 20.0005 21.2835 20.6102 21.2389C22.0079 21.1369 23.3286 20.6254 24.3961 19.5791C26.7665 17.2558 26.8023 13.4846 24.4885 11.1246Z" fill="currentColor"></path></svg>
+                        </a>
+                    </div>
+                </div>
+                
                 <div class="raw-data" id="rawData"></div>
                 
                 <div class="text-center mt-3">
@@ -307,18 +386,18 @@
     </div>
 
     <footer class="footer">
-    <div class="container">
-        <div class="footer-links text-center">
-            <div class="footer-link">
-                <a class="hover-text" href="https://beian.miit.gov.cn/">浙ICP备2025165329号-1</a> | 
-                <img style="display: inline; width: 18px; padding-top: 2px; margin-bottom: 4px;" src="https://www.skyfurry.top/beian.png">
-                <a class="hover-text" href="https://beian.mps.gov.cn/#/query/webSearch?code=33018302001855">浙公网安备33018302001855号</a>
+        <div class="container">
+            <div class="footer-links text-center">
+                <div class="footer-link">
+                    <a class="hover-text" href="https://beian.miit.gov.cn/">浙ICP备2025165329号-1</a> | 
+                    <img style="display: inline; width: 18px; padding-top: 2px; margin-bottom: 4px;" src="https://www.skyfurry.top/beian.png">
+                    <a class="hover-text" href="https://beian.mps.gov.cn/#/query/webSearch?code=33018302001855">浙公网安备33018302001855号</a>
+                </div>
+                <p class="mb-0 mt-2"><small>数据来源于公开Whois信息，仅供参考</small></p>
+                <p class="copyright mt-2 mb-0">© 2023 Whois查询工具. 所有权利保留.</p>
             </div>
-            <p class="mb-0 mt-2"><small>数据来源于公开Whois信息，仅供参考</small></p>
-            <p class="copyright mt-2 mb-0">© 2023 Whois查询工具. 所有权利保留.</p>
         </div>
-    </div>
-</footer>
+    </footer>
 
     <script src="./bootstrap.bundle.min.js"></script>
     <script>
@@ -336,6 +415,9 @@
         const toggleRawBtn = document.getElementById('toggleRawBtn');
         const loadingSpinner = document.querySelector('.loading-spinner');
         const errorMessage = document.getElementById('errorMessage');
+        const buyDomainContainer = document.getElementById('buyDomainContainer');
+        const aliyunLink = document.getElementById('aliyunLink');
+        const tencentLink = document.getElementById('tencentLink');
         
         // 上次查询时间，用于限频
         let lastQueryTime = 0;
@@ -445,6 +527,7 @@
             domainInfoContainer.innerHTML = '';
             rawData.textContent = '';
             rawData.style.display = 'none';
+            buyDomainContainer.style.display = 'none';
             toggleRawBtn.innerHTML = '<i class="bi bi-code-slash me-2"></i>查看完整Whois信息';
         }
         
@@ -456,9 +539,13 @@
             if (data.is_available === 1) {
                 domainStatusBadge.textContent = '可注册';
                 domainStatusBadge.className = 'badge rounded-pill bg-success';
+                
+                // 显示购买链接
+                showBuyLinks(data.domain);
             } else {
                 domainStatusBadge.textContent = '已注册';
                 domainStatusBadge.className = 'badge rounded-pill bg-primary';
+                buyDomainContainer.style.display = 'none';
             }
             
             // 设置原始数据
@@ -527,7 +614,7 @@
                     <div class="info-item">
                         <div class="info-label">域名状态</div>
                         <div class="info-value">
-                            ${formatDomainStatus(data.info.domain_status)}
+                            ${formatDomainStatusCN(data.info.domain_status)}
                         </div>
                     </div>
                     
@@ -544,24 +631,115 @@
             resultCard.style.display = 'block';
         }
         
-        // 格式化域名状态
-        function formatDomainStatus(statuses) {
+        // 显示购买链接
+        function showBuyLinks(domain) {
+            const domainParts = domain.split('.');
+            const domainName = domainParts[0];
+            const domainSuffix = domainParts[1];
+            
+            // 设置阿里云链接
+            aliyunLink.href = `https://wanwang.aliyun.com/domain/searchresult/?keyword=${domainName}&suffix=${domainSuffix}`;
+            
+            // 设置腾讯云链接
+            tencentLink.href = `https://buy.cloud.tencent.com/domain?domain=${domainName}&tlds=${domainSuffix}`;
+            
+            // 显示购买容器
+            buyDomainContainer.style.display = 'block';
+        }
+        
+        // 格式化域名状态（显示中文）
+        function formatDomainStatusCN(statuses) {
             if (!statuses || statuses.length === 0) {
                 return '<span class="text-muted">无状态信息</span>';
             }
             
+            // 域名状态中英文对照表
+            const statusMap = {
+                // 标准状态
+                'ok': { cn: '正常', en: 'ok' },
+                'inactive': { cn: '未激活', en: 'inactive' },
+                'pendingCreate': { cn: '创建中', en: 'pendingCreate' },
+                'pendingDelete': { cn: '删除中', en: 'pendingDelete' },
+                'pendingRenew': { cn: '续费中', en: 'pendingRenew' },
+                'pendingTransfer': { cn: '转移中', en: 'pendingTransfer' },
+                'pendingUpdate': { cn: '更新中', en: 'pendingUpdate' },
+                'clientDeleteProhibited': { cn: '禁止删除(注册商设置)', en: 'clientDeleteProhibited' },
+                'clientHold': { cn: '暂停解析(注册商设置)', en: 'clientHold' },
+                'clientRenewProhibited': { cn: '禁止续费(注册商设置)', en: 'clientRenewProhibited' },
+                'clientTransferProhibited': { cn: '禁止转移(注册商设置)', en: 'clientTransferProhibited' },
+                'clientUpdateProhibited': { cn: '禁止更新(注册商设置)', en: 'clientUpdateProhibited' },
+                'serverDeleteProhibited': { cn: '禁止删除(注册局设置)', en: 'serverDeleteProhibited' },
+                'serverHold': { cn: '暂停解析(注册局设置)', en: 'serverHold' },
+                'serverRenewProhibited': { cn: '禁止续费(注册局设置)', en: 'serverRenewProhibited' },
+                'serverTransferProhibited': { cn: '禁止转移(注册局设置)', en: 'serverTransferProhibited' },
+                'serverUpdateProhibited': { cn: '禁止更新(注册局设置)', en: 'serverUpdateProhibited' },
+                
+                // 常见注册商特定状态
+                'autoRenewPeriod': { cn: '自动续费期', en: 'autoRenewPeriod' },
+                'redemptionPeriod': { cn: '赎回期', en: 'redemptionPeriod' },
+                'addPeriod': { cn: '添加期', en: 'addPeriod' },
+                'renewPeriod': { cn: '续费期', en: 'renewPeriod' },
+                'transferPeriod': { cn: '转移期', en: 'transferPeriod' },
+                'active': { cn: '活跃', en: 'active' },
+                'locked': { cn: '已锁定', en: 'locked' },
+                'expired': { cn: '已过期', en: 'expired' },
+                
+                // 中文状态解释
+                '正常': { cn: '正常', en: 'ok' },
+                '禁止更新': { cn: '禁止更新', en: 'updateProhibited' },
+                '禁止转移': { cn: '禁止转移', en: 'transferProhibited' },
+                '禁止删除': { cn: '禁止删除', en: 'deleteProhibited' },
+                '暂停解析': { cn: '暂停解析', en: 'hold' },
+                '待确认': { cn: '待确认', en: 'pendingConfirmation' },
+                '待审核': { cn: '待审核', en: 'pendingReview' },
+                '待支付': { cn: '待支付', en: 'pendingPayment' }
+            };
+            
             return statuses.map(status => {
-                // 提取状态描述
+                // 提取状态代码和描述
                 const parts = status.split('（');
-                const statusCode = parts[0].trim();
-                const description = parts[1] ? parts[1].replace('）', '') : '';
+                let statusCode = parts[0].trim();
+                let description = parts[1] ? parts[1].replace('）', '') : '';
+                
+                // 标准化状态代码（去除URL部分）
+                statusCode = statusCode.replace(/https?:\/\/[^\s]+/g, '').trim();
+                
+                // 查找对应的中英文状态
+                let statusInfo = statusMap[statusCode.toLowerCase()] || 
+                                 statusMap[statusCode.split(' ')[0].toLowerCase()] ||
+                                 statusMap[statusCode.split('（')[0].toLowerCase()] ||
+                                 { cn: statusCode, en: statusCode };
+                
+                // 如果有括号中的描述，优先使用
+                if (description) {
+                    statusInfo.cn = description;
+                }
                 
                 return `
-                    <span class="domain-status-item" title="${description || statusCode}">
-                        ${statusCode}
+                    <span class="domain-status-item">
+                        ${statusInfo.cn}
+                        <span class="status-original" title="英文原状态">${statusInfo.en}</span>
                     </span>
                 `;
             }).join('');
+        }
+        
+        // 格式化域名状态（原始英文显示）
+        function formatDomainStatus(statuses) {
+            if (!statuses || statuses.length === 0) {
+                return '无';
+            }
+            
+            return statuses.map(status => {
+                // 提取状态代码
+                const parts = status.split('（');
+                let statusCode = parts[0].trim();
+                
+                // 标准化状态代码（去除URL部分）
+                statusCode = statusCode.replace(/https?:\/\/[^\s]+/g, '').trim();
+                
+                return statusCode;
+            }).join(', ');
         }
         
         // 格式化DNS服务器
