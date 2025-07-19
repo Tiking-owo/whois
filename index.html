@@ -445,31 +445,24 @@
                 }
             });
             
-            // 新增：检查URL路径并自动查询
+            // 新增：检查URL参数并自动查询
             autoQueryFromUrl();
         });
         
-        // 新增：从URL路径自动查询
+        // 新增：从URL参数自动查询
         function autoQueryFromUrl() {
-            // 获取当前URL路径
-            const path = window.location.pathname;
+            // 获取URL参数
+            const urlParams = new URLSearchParams(window.location.search);
+            const domain = urlParams.get('domain');
             
-            // 检查路径格式是否为 /domain.extension
-            const domainMatch = path.match(/^\/([a-zA-Z0-9-]+\.[a-zA-Z]{2,})$/);
-            
-            if (domainMatch && domainMatch[1]) {
-                const domain = domainMatch[1];
+            if (domain && isValidDomain(domain)) {
+                // 填充输入框
+                domainInput.value = domain;
                 
-                // 验证域名格式
-                if (isValidDomain(domain)) {
-                    // 填充输入框
-                    domainInput.value = domain;
-                    
-                    // 执行查询（延迟500ms确保页面加载完成）
-                    setTimeout(() => {
-                        queryWhois();
-                    }, 500);
-                }
+                // 执行查询（延迟500ms确保页面加载完成）
+                setTimeout(() => {
+                    queryWhois();
+                }, 500);
             }
         }
         
@@ -497,6 +490,10 @@
             
             // 显示加载中
             loadingSpinner.style.display = 'block';
+            
+            // 更新URL为/?domain=xxx格式
+            const newUrl = `${window.location.pathname}?domain=${encodeURIComponent(domain)}`;
+            window.history.pushState({}, '', newUrl);
             
             // 构建API URL
             const apiUrl = `${WHOIS_API_BASE}?domain=${encodeURIComponent(domain)}&raw=1`;
@@ -665,10 +662,10 @@
             const domainSuffix = domainParts[1];
             
             // 设置阿里云链接
-            aliyunLink.href = `https://wanwang.aliyun.com/domain/searchresult/?keyword=${domainName}&suffix=${domainSuffix}`;
+            aliyunLink.href = `https://wanwang.aliyun.com/domain/searchresult/?keyword=${domainName}&suffix=.${domainSuffix}`;
             
             // 设置腾讯云链接
-            tencentLink.href = `https://buy.cloud.tencent.com/domain?domain=${domainName}&tlds=${domainSuffix}`;
+            tencentLink.href = `https://buy.cloud.tencent.com/domain?domain=${domainName}&tlds=.${domainSuffix}`;
             
             // 显示购买容器
             buyDomainContainer.style.display = 'block';
