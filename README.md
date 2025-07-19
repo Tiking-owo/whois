@@ -31,6 +31,6 @@
 或自行部署：
 
 ```bash
-git clone https://github.com/your-repo/whois-query.git
-cd whois-query
+git clone https://github.com/Tiking-owo/whois.git
+cd whois
 # 将文件放入您的 Web 服务器
