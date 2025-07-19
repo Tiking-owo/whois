@@ -190,7 +190,7 @@
             margin-left: 0.5rem;
         }
         
-        /* 新增购买链接样式 */
+        /* 购买链接样式 */
         .buy-domain-container {
             margin-top: 2rem;
             padding: 1.5rem;
@@ -444,7 +444,34 @@
                     toggleRawBtn.innerHTML = '<i class="bi bi-code-slash me-2"></i>查看完整Whois信息';
                 }
             });
+            
+            // 新增：检查URL路径并自动查询
+            autoQueryFromUrl();
         });
+        
+        // 新增：从URL路径自动查询
+        function autoQueryFromUrl() {
+            // 获取当前URL路径
+            const path = window.location.pathname;
+            
+            // 检查路径格式是否为 /domain.extension
+            const domainMatch = path.match(/^\/([a-zA-Z0-9-]+\.[a-zA-Z]{2,})$/);
+            
+            if (domainMatch && domainMatch[1]) {
+                const domain = domainMatch[1];
+                
+                // 验证域名格式
+                if (isValidDomain(domain)) {
+                    // 填充输入框
+                    domainInput.value = domain;
+                    
+                    // 执行查询（延迟500ms确保页面加载完成）
+                    setTimeout(() => {
+                        queryWhois();
+                    }, 500);
+                }
+            }
+        }
         
         // 查询Whois信息
         function queryWhois() {
