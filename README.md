@@ -19,7 +19,7 @@
 - **Bootstrap Icons** - 图标库
 
 ### 第三方服务
-- **WhoisCX API** - 域名查询服务https://api.whoiscx.com/
+- **WhoisCX API** - 域名查询服务http://api.whoiscx.com/
 - **jsDelivr** - 此网页所需前端库已本地化
 
 ## 🚀 快速使用
