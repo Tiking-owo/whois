@@ -29,7 +29,7 @@
             display: flex;
             flex-direction: column;
         }
-        .container.my-5 {
+        。container.my-5 {
             flex: 1 0 auto;
             padding-top: 2rem;
             padding-bottom: 2rem;
@@ -93,7 +93,7 @@
             border-top-right-radius: 15px;
         }
         
-        .result-body {
+        。result-body {
             padding: 2rem;
         }
         
@@ -103,7 +103,7 @@
             padding-bottom: 1.5rem;
         }
         
-        .info-item:last-child {
+        。info-item:last-child {
             border-bottom: none;
             margin-bottom: 0;
             padding-bottom: 0;
@@ -127,7 +127,7 @@
             background-color: #f72585;
         }
         
-        .raw-data {
+        。raw-data {
             background-color: #f8f9fa;
             border-radius: 10px;
             padding: 1.5rem;
@@ -149,12 +149,12 @@
             text-decoration: underline;
         }
         
-        .loading-spinner {
+        。loading-spinner {
             display: none;
             margin: 2rem auto;
         }
         
-        .error-message {
+        。error-message {
             color: var(--warning-color);
             font-weight: 600;
             text-align: center;
@@ -162,7 +162,7 @@
             display: none;
         }
         
-        .domain-status-item {
+        。domain-status-item {
             display: inline-block;
             margin-right: 0.5rem;
             margin-bottom: 0.5rem;
@@ -172,7 +172,7 @@
             font-size: 0.9rem;
         }
         
-        .name-server-item {
+        。name-server-item {
             display: inline-block;
             margin-right: 0.5rem;
             margin-bottom: 0.5rem;
@@ -238,11 +238,11 @@
             color: #FF6A00;
         }
         
-        .buy-link-tencent:hover {
+        。buy-link-tencent:hover {
             color: #006EFF;
         }
 
-        .buy-link-huaweicloud:hover {
+        。buy-link-huaweicloud:hover {
             color: #ff5100;
         }
 
@@ -253,11 +253,11 @@
         .buy-link-xinnet:hover {
             color: #5e0000;
         }
-        .buy-link-cloudbaidu:hover {
+        。buy-link-cloudbaidu:hover {
             color: #00ff40;
         }
 
-        .buy-link-volcengine:hover {
+        。buy-link-volcengine:hover {
             color: #00b7ff;
         }
         
@@ -424,7 +424,7 @@
             <div class="footer-links text-center">
                 <div class="footer-link">
                     <a class="hover-text" href="https://beian.miit.gov.cn/">浙ICP备2025165329号-1</a> | 
-                    <img style="display: inline; width: 18px; padding-top: 2px; margin-bottom: 4px;" src="https://www.skyfurry.top/beian.png">
+                    <img style="display: inline; width: 18px; padding-top: 2px; margin-bottom: 4px;" src="https://beian.mps.gov.cn/img/logo01.dd7ff50e.png">
                     <a class="hover-text" href="https://beian.mps.gov.cn/#/query/webSearch?code=33018302001855">浙公网安备33018302001855号</a>
                 </div>
                 <p class="mb-0 mt-2"><small>数据来源于公开Whois信息，仅供参考</small></p>
@@ -436,7 +436,7 @@
     <script src="./bootstrap.bundle.min.js"></script>
     <script>
         // API配置
-        const WHOIS_API_BASE = 'http://api.whoiscx.com/whois/';
+        const WHOIS_API_BASE = 'http://api.tiking.top/whois/v1/';
         
         // DOM元素
         const domainInput = document.getElementById('domainInput');
@@ -540,7 +540,7 @@
                     }
                     return response.json();
                 })
-                .then(data => {
+                。键，然后(data => {
                     loadingSpinner.style.display = 'none';
                     
                     if (data.status === 0) {
