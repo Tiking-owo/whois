@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WHOIS 查询 API 文档</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #f8f9fa;
+            --bg-sidebar: #ffffff;
+            --bg-code: #0f172a;
+            --text-primary: #1e293b;
+            --text-muted: #64748b;
+            --accent-color: #4361ee;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+        }
+        /* 导航栏样式 */
+        .navbar {
+            background-color: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+        /* 代码块样式 */
+        pre {
+            background-color: var(--bg-code);
+            color: #38bdf8;
+            padding: 1.25rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            border: 1px solid #1e293b;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+        .json-key { color: #f472b6; }
+        .json-value { color: #34d399; }
+        .json-number { color: #fbbf24; }
+        .json-boolean { color: #a78bfa; }
+        
+        .method-badge {
+            background-color: #e0e7ff;
+            color: var(--accent-color);
+            font-weight: 600;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+        }
+        .param-table th {
+            background-color: #f1f5f9;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+        .card {
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#"><i class="bi bi-terminal-fill me-2"></i>Tiking Whois API</a>
+            <span class="navbar-text ms-auto text-muted"><i class="bi bi-book me-1"></i>api使用说明</span>
+        </div>
+    </nav>
+
+    <div class="container my-5">
+        <div class="row g-5">
+            
+            <div class="col-lg-7">
+                <div class="mb-4">
+                    <h1 class="fw-bold mb-2">WHOIS 域名信息查询 API</h1>
+                    <p class="text-muted fs-5">数据来源于公开Whois信息，仅供参考</p>
+                </div>
+
+                <div class="card mb-4 p-4">
+                    <h5 class="fw-bold mb-3">接口基本信息</h5>
+                    <div class="d-flex align-items-center mb-2">
+                        <span class="method-badge me-3">GET</span>
+                        <code class="fs-6 text-dark" id="api-url">https://api.tiking.top/whois/v1/</code>
+                        <button class="btn btn-sm btn-link text-muted ms-2" onclick="copyUrl()"><i class="bi bi-clipboard"></i></button>
+                    </div>
+                    <small class="text-muted"><i class="bi bi-shield-check me-1"></i>支持跨域请求 (CORS)、返回格式统一为标准嵌套 JSON 格式。</small>
+                </div>
+
+                <div class="mb-4">
+                    <h5 class="fw-bold mb-3"><i class="bi bi-arrow-right-circle-fill text-primary me-2"></i>请求参数 (Query)</h5>
+                    <div class="table-responsive">
+                        <table class="table param-table align-middle card">
+                            <thead>
+                                <tr>
+                                    <th>参数名</th>
+                                    <th>类型</th>
+                                    <th>必填</th>
+                                    <th>默认值</th>
+                                    <th>示例描述</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code class="text-danger fw-bold">domain</code></td>
+                                    <td>String</td>
+                                    <td><span class="badge bg-danger">是</span></td>
+                                    <td>-</td>
+                                    <td>需要查询的完整域名（例如：<code>example.com</code>）</td>
+                                </tr>
+                                <tr>
+                                    <td><code>raw</code></td>
+                                    <td>Integer</td>
+                                    <td><span class="badge bg-secondary">否</span></td>
+                                    <td>0</td>
+                                    <td>是否返回 WHOIS 完整原始文本。<code>1</code>=返回，<code>0</code>=隐藏原始文本。</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <h5 class="fw-bold mb-3"><i class="bi bi-check-circle-fill text-success me-2"></i>返回响应核心字段说明</h5>
+                    <div class="table-responsive">
+                        <table class="table param-table align-middle card">
+                            <thead>
+                                <tr>
+                                    <th>一级节点</th>
+                                    <th>二级节点</th>
+                                    <th>类型</th>
+                                    <th>说明描述</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>status</code></td>
+                                    <td>-</td>
+                                    <td>Int</td>
+                                    <td>请求状态码：<code>1</code> 表示查询成功，<code>0</code> 表示输入有误或查询失败。</td>
+                                </tr>
+                                <tr>
+                                    <td><code>error</code></td>
+                                    <td>-</td>
+                                    <td>String</td>
+                                    <td>当 status 为 0 时返回，提示具体的失败信息。</td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="4"><code>data</code></td>
+                                    <td><code>domain</code></td>
+                                    <td>String</td>
+                                    <td>查询的完整域名。</td>
+                                </tr>
+                                <tr>
+                                    <td><code>domain_suffix</code></td>
+                                    <td>String</td>
+                                    <td>域名的顶级后缀（如 <code>com</code>、<code>cn</code>）。</td>
+                                </tr>
+                                <tr>
+                                    <td><code>is_available</code></td>
+                                    <td>Int</td>
+                                    <td>域名是否可注册：<code>1</code>=可以注册（未被占用），<code>0</code>=已被注册。</td>
+                                </tr>
+                                <tr>
+                                    <td><code>raw</code></td>
+                                    <td>String</td>
+                                    <td>WHOIS 原始数据文本（多行字符串）。</td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="11"><code>data ➔ info</code></td>
+                                    <td><code>registrar_name</code></td>
+                                    <td>String</td>
+                                    <td>域名当前的所属注册商名称。</td>
+                                </tr>
+                                <tr>
+                                    <td><code>registrant_name</code></td>
+                                    <td>String</td>
+                                    <td>注册人姓名（如果未公开隐私保护则为空）。</td>
+                                </tr>
+                                <tr>
+                                    <td><code>registrant_email</code></td>
+                                    <td>String</td>
+                                    <td>注册人邮箱（如果未公开隐私保护则为空）。</td>
+                                </tr>
+                                <tr>
+                                    <td><code>whois_server</code></td>
+                                    <td>String</td>
+                                    <td>提供 WHOIS 原始信息的顶级服务器地址。</td>
+                                </tr>
+                                <tr>
+                                    <td><code>creation_time</code></td>
+                                    <td>String</td>
+                                    <td>标准格式化域名创建时间（如：<code>1995-08-14 00:00:00</code>）。</td>
+                                </tr>
+                                <tr>
+                                    <td><code>expiration_time</code></td>
+                                    <td>String</td>
+                                    <td>标准格式化域名到期时间（如：<code>2027-08-13 00:00:00</code>）。</td>
+                                </tr>
+                                <tr>
+                                    <td><code>creation_days</code></td>
+                                    <td>Int</td>
+                                    <td>该域名至今已经成功注册并持续的总天数。</td>
+                                </tr>
+                                <tr>
+                                    <td><code>valid_days</code></td>
+                                    <td>Int</td>
+                                    <td>距离域名到期所持有的剩余有效天数。</td>
+                                </tr>
+                                <tr>
+                                    <td><code>is_expire</code></td>
+                                    <td>Int</td>
+                                    <td>域名当前是否已过期：<code>1</code>=已过期，<code>0</code>=未过期。</td>
+                                </tr>
+                                <tr>
+                                    <td><code>domain_status</code></td>
+                                    <td>Array</td>
+                                    <td>域名当前的状态字符串数组集合（如：<code>["clientDeleteProhibited"]</code>）。</td>
+                                </tr>
+                                <tr>
+                                    <td><code>name_server</code></td>
+                                    <td>Array</td>
+                                    <td>该域名正在权威生效中的 DNS 服务器列表数组。</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="sticky-top" style="top: 90px; z-index: 10;">
+                    
+                    <div class="mb-4">
+                        <h6 class="fw-bold text-uppercase tracking-wider text-muted mb-2">测试调用示例</h6>
+                        <div class="bg-dark text-white p-3 rounded-3 font-monospace small position-relative">
+                            curl "https://api.tiking.top/whois/v1/?domain=example.com"
+                        </div>
+                    </div>
+
+                    <div>
+                        <h6 class="fw-bold text-uppercase tracking-wider text-muted mb-2">成功响应 JSON 示例 (200 OK)</h6>
+<pre><code id="json-block">{
+  <span class="json-key">"status"</span>: <span class="json-number">1</span>,
+  <span class="json-key">"data"</span>: {
+    <span class="json-key">"domain"</span>: <span class="json-value">"example.com"</span>,
+    <span class="json-key">"domain_suffix"</span>: <span class="json-value">"com"</span>,
+    <span class="json-key">"is_available"</span>: <span class="json-number">0</span>,
+    <span class="json-key">"raw"</span>: <span class="json-value">"Domain Name: EXAMPLE.COM\nRegistry Domain ID: 233226173_DOMAIN_COM-VRSN..."</span>,
+    <span class="json-key">"info"</span>: {
+      <span class="json-key">"registrar_name"</span>: <span class="json-value">"RESERVED-Internet Assigned Numbers Authority"</span>,
+      <span class="json-key">"registrant_name"</span>: <span class="json-value">""</span>,
+      <span class="json-key">"registrant_email"</span>: <span class="json-value">""</span>,
+      <span class="json-key">"whois_server"</span>: <span class="json-value">"whois.verisign-grs.com"</span>,
+      <span class="json-key">"creation_time"</span>: <span class="json-value">"1995-08-14 00:00:00"</span>,
+      <span class="json-key">"expiration_time"</span>: <span class="json-value">"2027-08-13 00:00:00"</span>,
+      <span class="json-key">"creation_days"</span>: <span class="json-number">11263</span>,
+      <span class="json-key">"valid_days"</span>: <span class="json-number">424</span>,
+      <span class="json-key">"is_expire"</span>: <span class="json-number">0</span>,
+      <span class="json-key">"domain_status"</span>: [
+        <span class="json-value">"clientDeleteProhibited"</span>,
+        <span class="json-value">"clientTransferProhibited"</span>
+      ],
+      <span class="json-key">"name_server"</span>: [
+        <span class="json-value">"A.IANA-SERVERS.NET"</span>,
+        <span class="json-value">"B.IANA-SERVERS.NET"</span>
+      ]
+    }
+  }
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer class="py-4 mt-auto border-top bg-white">
+        <div class="container text-center text-muted small">
+        <p>
+                    <a class="hover-text" style='text-decoration: none;
+color: #333;' href="https://beian.miit.gov.cn/">浙ICP备2025165329号-1</a> | 
+                    <img style="display: inline; width: 18px; padding-top: 2px; margin-bottom: 4px;" src="https://beian.mps.gov.cn/img/logo01.dd7ff50e.png">
+                    <a class="hover-text" style='text-decoration: none;
+color: #333;' href="https://beian.mps.gov.cn/#/query/webSearch?code=33018302001855">浙公网安备33018302001855号</a></p>
+            &copy; 2026 皪澄_Tiking
+        </div>
+    </footer>
+
+    <script>
+        function copyUrl() {
+            navigator.clipboard.writeText("https://api.tiking.top/whois/v1/");
+            alert("API 基础接口链接已复制到剪贴板！");
+        }
+    </script>
+</body>
+</html>
